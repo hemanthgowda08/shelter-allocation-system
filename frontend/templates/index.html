@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emergency Shelter Allocation Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">PRJ_525 · 50% Milestone Prototype</p>
+      <h1>Emergency Shelter Allocation Platform</h1>
+      <p class="subtitle">Capacity-aware decision support for crisis shelter allocation</p>
+    </div>
+    <button id="optimizeBtn" class="primary">Run Optimization</button>
+  </header>
+
+  <main class="container">
+    <section id="message" class="message hidden"></section>
+
+    <section class="metrics-grid">
+      <article class="metric"><span>Total affected</span><strong id="totalPeople">—</strong></article>
+      <article class="metric"><span>Allocated</span><strong id="allocated">—</strong></article>
+      <article class="metric"><span>Unallocated</span><strong id="unallocated">—</strong></article>
+      <article class="metric"><span>Avg. travel</span><strong id="avgTravel">—</strong></article>
+      <article class="metric"><span>Solver runtime</span><strong id="runtime">—</strong></article>
+    </section>
+
+    <section class="panel controls">
+      <div>
+        <h2>Optimization Controls</h2>
+        <p>Adjust the secondary objective weights, then generate a new allocation. Priority protection remains dominant when capacity is insufficient.</p>
+      </div>
+      <label>Travel weight<input id="travelWeight" type="number" min="0" step="0.1" value="1"></label>
+      <label>Balance weight<input id="balanceWeight" type="number" min="0" step="0.1" value="10"></label>
+    </section>
+
+    <div class="two-col">
+      <section class="panel">
+        <div class="panel-head"><h2>Affected Groups</h2><span id="groupCount"></span></div>
+        <div class="table-wrap"><table><thead><tr><th>Group</th><th>People</th><th>Priority</th><th>Requirements</th></tr></thead><tbody id="groupsBody"></tbody></table></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>Shelters</h2><span id="shelterCount"></span></div>
+        <div class="table-wrap"><table><thead><tr><th>Shelter</th><th>Capacity</th><th>Occupied</th><th>Status</th></tr></thead><tbody id="sheltersBody"></tbody></table></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Recommended Allocation</h2><span id="runStatus">No run yet</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Group</th><th>Shelter</th><th>People</th><th>Distance</th><th>Priority</th></tr></thead><tbody id="allocationBody"></tbody></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Shelter Utilization</h2><span>After recommended allocation</span></div>
+      <div id="utilization" class="util-grid"></div>
+    </section>
+
+    <section class="panel architecture-note">
+      <h2>Implemented at this milestone</h2>
+      <div class="flow"><span>Web UI</span><b>→</b><span>Flask API</span><b>→</b><span>SQLite database</span><b>→</b><span>PuLP + HiGHS optimizer</span><b>→</b><span>Allocation results</span></div>
+      <p>The optimization engine is the original project core. This milestone adds a runnable web/API and persistence layer around it. PostgreSQL, production authentication, GIS routing and AI/ML forecasting remain future phases.</p>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
